@@ -1,5 +1,10 @@
 Temporary Bookmark Manager
 ==========================
+A Chrome extension to allow short-life bookmarks to be saved.
+
+Continuous Integration
+---------------------
+- Master: ![Master](https://travis-ci.org/ALRW/temp_bm_manager.svg?branch=master)
 
 Implemented Features
 --------------------
