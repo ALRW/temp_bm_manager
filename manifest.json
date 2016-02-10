@@ -1,33 +1,23 @@
 {
   "manifest_version": 2,
   "name": "Temporary Bookmark Manager",
-  "version": "versionString",
-  "default_locale": "en",
+  "version": "1.0",
   "description": "An extension for short-life bookmark management",
   "icons": {
-    "48": "icon48.png",
+    "48": "icon48.png"
   },
   "browser_action": {
     "default_icon": "icon48.png",
     "default_title": "Temporary Bookmark Manager",
     "default_popup": "popup.html"
   },
-
   "author": "Andrew Werner",
-  "background": {
-    "scripts": ["background.js"],
-    "persistent": true
-  },
-  "chrome_ui_overrides": {
-    "bookmarks_ui": {
-      "remove_bookmark_shortcut": true,
-      "remove_button": true
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
     }
-  },
-  "commands": {},
-  "content_scripts": [{
-    "js":["content.js"]
-    }],
+  ],
   "devtools_page": "devtools.html",
   "externally_connectable": {
     "ids": ["*"]
@@ -35,5 +25,5 @@
   "homepage_url": "https://github.com/ALRW/temp_bm_manager",
   "offline_enabled": true,
   "permissions": ["tabs", "activeTab", "bookmarks"],
-  "short_name": "TBM",
+  "short_name": "TBM"
 }
