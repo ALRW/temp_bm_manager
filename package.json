@@ -1,0 +1,23 @@
+{
+  "name": "temp_bm_manager",
+  "version": "1.0.0",
+  "description": "Temporary Bookmark Manager ==========================",
+  "main": "popup.html",
+  "scripts": {
+    "test": "grunt jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ALRW/temp_bm_manager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ALRW/temp_bm_manager/issues"
+  },
+  "homepage": "https://github.com/ALRW/temp_bm_manager#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jasmine": "^1.0.0"
+  }
+}
