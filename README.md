@@ -5,11 +5,11 @@ Implemented Features
 --------------------
 - Create manifest.json and file structure
 - setup testing environment.
+- Create a short-life bookmarks folder if one does not exist.
 
 Features to Implemented
 -----------------------
 
-- Create a short-life bookmarks folder if one does not exist.
 - Allow a user to create a new bookmarks and add it to the short-life folder through the extension.
 - Allow a user to set the length of life of a bookmarks.
 - Automatically delete a bookmark when it is older than its life-span.
