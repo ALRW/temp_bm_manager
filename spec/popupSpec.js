@@ -7,11 +7,13 @@ var newBm = { parentId: '385', title: undefined, url: undefined };
     chrome = {
       bookmarks: {
         create: function() {},
-        search: function() {}
+        search: function() {},
+        getChildren: function(){}
       }
     };
     spyOn(chrome.bookmarks, 'create');
     spyOn(chrome.bookmarks, 'search');
+    spyOn(chrome.bookmarks, 'getChildren');
   });
 
   describe('#isShortLifeFolder', function() {
@@ -32,6 +34,13 @@ var newBm = { parentId: '385', title: undefined, url: undefined };
     it('creates a new short-life bookmark', function(){
       bmm.createBookmark();
       expect(chrome.bookmarks.create).toHaveBeenCalledWith(newBm);
+    });
+  });
+
+  describe('#getParentID', function(){
+    it('ensures that new bookmarks are added to the correct folder', function(){
+      bmm.getParentID();
+      expect(chrome.bookmarks.getChildren).toHaveBeenCalledWith('2', jasmine.any(Function));
     });
   });
 });
