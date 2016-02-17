@@ -1,5 +1,5 @@
 describe('content script', function(){
-  it('test', function(){
+  it('has a listener', function(){
 
   });
 });
