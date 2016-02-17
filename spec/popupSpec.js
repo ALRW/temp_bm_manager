@@ -1,5 +1,7 @@
 describe('popup script', function() {
 var bmm = new BookmarkManager();
+var shortLifeFolder = {"title": "Short Life Bookmarks"};
+var newBm = { parentId: '385', title: undefined, url: undefined };
 
   beforeEach(function() {
     chrome = {
@@ -12,11 +14,6 @@ var bmm = new BookmarkManager();
     spyOn(chrome.bookmarks, 'search');
   });
 
-  describe('#initialise', function() {
-
-
-  });
-  
   describe('#isShortLifeFolder', function() {
     it('checks whether there is a short-life folder', function() {
       bmm.isShortLifeFolder();
@@ -28,6 +25,13 @@ var bmm = new BookmarkManager();
     it('creates a Short life Bookmark folder', function() {
       bmm.createShortLifeFolder();
       expect(chrome.bookmarks.create).toHaveBeenCalledWith(shortLifeFolder, jasmine.any(Function));
+    });
+  });
+
+  describe('#createBookmark', function(){
+    it('creates a new short-life bookmark', function(){
+      bmm.createBookmark();
+      expect(chrome.bookmarks.create).toHaveBeenCalledWith(newBm);
     });
   });
 });

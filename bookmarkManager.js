@@ -1,11 +1,11 @@
-function BookmarkManager() {}
+function BookmarkManager() {
+}
 
 BookmarkManager.prototype = {
 
   initialise: function() {
-    BookmarkManager.prototype.isShortLifeFolder();
+    this.isShortLifeFolder();
   },
-
   createShortLifeFolder: function() {
     chrome.bookmarks.create(shortLifeFolder, function() {
       console.log("added Short Life Bookmarks Folder");
@@ -17,9 +17,18 @@ BookmarkManager.prototype = {
       if (result[0]) {
         console.log("There is already a folder");
       } else {
-        BookmarkManager.prototype.createShortLifeFolder();
+        this.createShortLifeFolder();
       }
     });
   },
+
+  createBookmark: function(title, url){
+    newBookmark = {
+      parentId: "385",
+      title: title,
+      url: url
+    };
+    chrome.bookmarks.create(newBookmark);
+  }
 
 };
