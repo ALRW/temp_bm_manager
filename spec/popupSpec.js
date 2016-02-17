@@ -16,6 +16,7 @@ var bmm = new BookmarkManager();
 
 
   });
+  
   describe('#isShortLifeFolder', function() {
     it('checks whether there is a short-life folder', function() {
       bmm.isShortLifeFolder();
