@@ -1,7 +1,12 @@
-describe('popup script', function() {
+describe('BookmarkManager', function() {
 var bmm = new BookmarkManager();
 var shortLifeFolder = {"title": "Short Life Bookmarks"};
 var newBm = { parentId: '385', title: undefined, url: undefined };
+var element = {
+  target: {
+    tagName: "A"
+  }
+};
 
   beforeEach(function() {
     chrome = {
@@ -12,11 +17,14 @@ var newBm = { parentId: '385', title: undefined, url: undefined };
       },
       tabs: {
         query: function(){},
+        create: function(){}
       }
     };
     spyOn(chrome.bookmarks, 'create');
     spyOn(chrome.bookmarks, 'search');
-    spyOn(chrome.bookmarks, 'getChildren');
+    spyOn(chrome.bookmarks, 'getChildren').and.callFake(function(){
+      BookmarkManager.prototype.bookmarks = {1:2};
+    });
     spyOn(chrome.tabs, 'query');
 
   });
@@ -47,6 +55,23 @@ var newBm = { parentId: '385', title: undefined, url: undefined };
       bmm.setParentId();
       expect(chrome.bookmarks.getChildren).toHaveBeenCalledWith('2', jasmine.any(Function));
     });
+  });
+
+  describe('#getBookmarks', function(){
+    it('gets all the bookmarks in the shortLifeFolder', function(){
+      bmm.getBookmarks();
+      expect(bmm.bookmarks).toEqual({1:2});
+    });
+  });
+
+  describe('#openBookmark', function(){
+    it('exits if the item is not a link', function(){
+      spyOn(chrome.tabs, 'create');
+      element.target.tagName = "B";
+      bmm.openBookmark(element);
+      expect(chrome.tabs.create).not.toHaveBeenCalled();
+    });
+
   });
 
 });

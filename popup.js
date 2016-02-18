@@ -1,9 +1,14 @@
-var shortLifeFolder = {"title": "Short Life Bookmarks"};
+document.addEventListener('DOMContentLoaded', function() {
+  Manager = new BookmarkManager();
 
-document.addEventListener('DOMContentLoaded', function(){
-  var Manager = new BookmarkManager();
   Manager.initialise();
-  document.getElementById('add').addEventListener('click', function(){
+
+  document.getElementById('add').addEventListener('click', function() {
     Manager.createBookmark();
   });
+
+  if (document.addEventListener)
+    document.addEventListener('click', Manager.openBookmark);
+  else
+    document.attachEvent('onclick', Manager.openBookmark);
 });
