@@ -1,6 +1,8 @@
 function BookmarkManager() {
 }
 
+var dayInMilliseconds = 86400000;
+
 BookmarkManager.prototype = {
 
   initialise: function() {
@@ -43,7 +45,8 @@ BookmarkManager.prototype = {
   },
 
   getBookmarks: function(){
-    chrome.bookmarks.getChildren(BookmarkManager.prototype.newBookmark.parentId.toString(), function(bookmarks){
+    var parentID = BookmarkManager.prototype.newBookmark.parentId.toString();
+    chrome.bookmarks.getChildren(parentID, function(bookmarks){
       console.log(bookmarks);
       BookmarkManager.prototype.bookmarks = bookmarks;
       BookmarkManager.prototype.showBookmarks();
@@ -65,8 +68,24 @@ BookmarkManager.prototype = {
     chrome.tabs.create({
       url: element.target.href
     });
-  }
+  },
 
+  removeBookmarks: function(){
+    new Promise(function(resolve, reject){
+      var parentID = BookmarkManager.prototype.newBookmark.parentId.toString();
+      chrome.bookmarks.getChildren(parentID, function(shortLifeFolderBookmarks){
+        resolve(shortLifeFolderBookmarks);
+      });
+  }).then(function(shortLifeFolderBookmarks){
+    console.log(shortLifeFolderBookmarks);
+    shortLifeFolderBookmarks.forEach(function(bookmark){
+      if(Date.now() - bookmark.dateAdded > dayInMilliseconds){
+        console.log("removing" + bookmark.title);
+        chrome.bookmarks.remove(bookmark.id);
+      }
+    });
+  });
+}
 };
 
 BookmarkManager.prototype.newBookmark = {
@@ -77,4 +96,4 @@ BookmarkManager.prototype.newBookmark = {
 
 BookmarkManager.prototype.shortLifeFolder = {"title": "Short Life Bookmarks"};
 
-BookmarkManager.prototype.bookmarks = [];
+// BookmarkManager.prototype.bookmarks = [];

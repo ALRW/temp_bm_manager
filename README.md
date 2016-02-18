@@ -12,13 +12,14 @@ Implemented Features
 - setup testing environment.
 - Create a short-life bookmarks folder if one does not exist.
 - Allow a user to create a new bookmarks and add it to the short-life folder through the extension.
+- Show all bookmarks in the temporary bookmarks folder.
 
 
 Features to Implemented
 -----------------------
 
-- Show all bookmarks in the temporary bookmarks folder.
+
+- Automatically delete a bookmark when it is older than its life-span(1 day initially).
 - Allow a user to set the length of life of a bookmarks.
-- Automatically delete a bookmark when it is older than its life-span.
 - Allow a User to setup an alert when a bookmark is about to be automatically deleted.
 - Over-ride Chrome shortcuts and use extension instead.
