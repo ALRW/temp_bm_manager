@@ -31,9 +31,11 @@ var element = {
 
   describe('#isShortLifeFolder', function() {
     it('checks whether there is a short-life folder', function() {
-      bmm.isShortLifeFolder().then(function(){
-      
+      bmm.isShortLifeFolder().then(function(result){
+        console.log(result);
       });
+      expect(chrome.bookmarks.search).toHaveBeenCalled();
+      done();
     });
   });
 

@@ -6,18 +6,26 @@ var dayInMilliseconds = 86400000;
 BookmarkManager.prototype = {
 
   initialise: function() {
-    this.isShortLifeFolder();
-    this.setParentId();
+    BookmarkManager.prototype.isShortLifeFolder().then(function(result){
+      if(result){
+        BookmarkManager.prototype.setParentId();
+      } else {
+        BookmarkManager.prototype.createShortLifeFolder();
+        }
+      });
   },
   createShortLifeFolder: function() {
-    chrome.bookmarks.create(this.shortLifeFolder, function() {
-      console.log("added Short Life Bookmarks Folder");
+    return new Promise(function(resolve){
+      chrome.bookmarks.create(BookmarkManager.prototype.shortLifeFolder, function(response) {
+        BookmarkManager.prototype.newBookmark.parentId = response.id;
+        resolve("Success");
+      });
     });
   },
 
   isShortLifeFolder: function() {
     return new Promise(function(resolve){
-      chrome.bookmarks.search(this.shortLifeFolder, function(result) {
+      chrome.bookmarks.search(BookmarkManager.prototype.shortLifeFolder, function(result) {
         if (result[0]) {
           resolve(true);
         } else {
@@ -28,13 +36,15 @@ BookmarkManager.prototype = {
   },
 
   setParentId: function(){
+    return new Promise(function(resolve){
     chrome.bookmarks.getChildren('2', function(result){
-      result.forEach(function(object){
-        if(object.title === 'Short Life Bookmarks'){
-          BookmarkManager.prototype.newBookmark.parentId = object.id;
-          BookmarkManager.prototype.getBookmarks();
+      result.forEach(function(node){
+        if(node.title === 'Short Life Bookmarks'){
+          BookmarkManager.prototype.newBookmark.parentId = node.id;
+          resolve("Success");
         }
       });
+    });
     });
   },
 
@@ -47,11 +57,10 @@ BookmarkManager.prototype = {
   },
 
   getBookmarks: function(){
-    var parentID = BookmarkManager.prototype.newBookmark.parentId.toString();
-    chrome.bookmarks.getChildren(parentID, function(bookmarks){
+    var parentId = BookmarkManager.prototype.newBookmark.parentId.toString();
+    chrome.bookmarks.getChildren(parentId, function(bookmarks){
       console.log(bookmarks);
       BookmarkManager.prototype.bookmarks = bookmarks;
-      BookmarkManager.prototype.showBookmarks();
     });
   },
 

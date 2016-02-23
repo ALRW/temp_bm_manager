@@ -12,12 +12,6 @@
     "default_popup": "popup.html"
   },
   "author": "Andrew Werner",
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
-    }
-  ],
   "devtools_page": "devtools.html",
   "externally_connectable": {
     "ids": ["*"]
