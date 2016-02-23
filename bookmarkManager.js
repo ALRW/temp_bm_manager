@@ -16,12 +16,14 @@ BookmarkManager.prototype = {
   },
 
   isShortLifeFolder: function() {
-    chrome.bookmarks.search(this.shortLifeFolder, function(result) {
-      if (result[0]) {
-        console.log("There is already a folder");
-      } else {
-        BookmarkManager.prototype.createShortLifeFolder();
-      }
+    return new Promise(function(resolve){
+      chrome.bookmarks.search(this.shortLifeFolder, function(result) {
+        if (result[0]) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
     });
   },
 

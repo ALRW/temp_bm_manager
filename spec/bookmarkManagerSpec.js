@@ -31,8 +31,9 @@ var element = {
 
   describe('#isShortLifeFolder', function() {
     it('checks whether there is a short-life folder', function() {
-      bmm.isShortLifeFolder();
-      expect(chrome.bookmarks.search).toHaveBeenCalledWith(shortLifeFolder, jasmine.any(Function));
+      bmm.isShortLifeFolder().then(function(){
+      
+      });
     });
   });
 
