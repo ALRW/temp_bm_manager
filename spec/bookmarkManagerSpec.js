@@ -6,7 +6,8 @@ describe('BookmarkManager', function() {
     var newBm = {
         parentId: '385',
         title: undefined,
-        url: undefined
+        url: undefined,
+        dateAdded: 1
     };
     var element = {
         target: {
@@ -19,13 +20,15 @@ describe('BookmarkManager', function() {
             bookmarks: {
                 create: function() {},
                 search: function() {},
-                getChildren: function() {}
+                getChildren: function() {},
+                remove: function() {}
             },
             tabs: {
                 query: function() {},
                 create: function() {}
             }
         };
+        spyOn(chrome.bookmarks, 'remove');
         spyOn(chrome.bookmarks, 'create');
         spyOn(chrome.bookmarks, 'search');
         spyOn(chrome.bookmarks, 'getChildren').and.callFake(function() {
@@ -91,4 +94,11 @@ describe('BookmarkManager', function() {
 
     });
 
+    describe('#removeBookmark', function() {
+        it('removes old bookmarks automatically', function(done) {
+            bmm.removeBookmarks([newBm]);
+            expect(chrome.bookmarks.remove).toHaveBeenCalledWith(newBm.id);
+            done();
+        });
+    });
 });
