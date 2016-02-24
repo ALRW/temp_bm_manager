@@ -1,7 +1,7 @@
 function BookmarkManager() {}
 
 var otherBookmarksFolderId = '2';
-var dayInMilliseconds = 86400000;
+var weekInMilliseconds = 6048000000;
 
 BookmarkManager.prototype = {
 
@@ -76,7 +76,7 @@ BookmarkManager.prototype = {
     removeBookmarks: function(bookmarks) {
         return new Promise(function(response) {
             bookmarks.forEach(function(bookmark) {
-                if (Date.now() - bookmark.dateAdded > dayInMilliseconds) {
+                if (Date.now() - bookmark.dateAdded > weekInMilliseconds) {
                     console.log("removing" + bookmark.title);
                     chrome.bookmarks.remove(bookmark.id);
                 }
