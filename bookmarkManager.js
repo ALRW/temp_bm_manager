@@ -5,6 +5,7 @@ var myBookmarkManager = (function() {
     };
     var shortLifeFolderId; 
     var weekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
+    var shortLifeBookmarks = [];
 
     function privateIsShortLifeFolder() {
         return new Promise(function(resolve) {
@@ -28,9 +29,23 @@ var myBookmarkManager = (function() {
         });
     }
 
+    function privateGetBookmarks() {
+        return new Promise(function(resolve) {
+            chrome.bookmarks.getChildren(shortLifeFolderId, function(bookmarks) {
+                if (bookmarks) {
+                    shortLifeBookmarks = bookmarks;
+                    resolve(bookmarks);
+                } else {
+                  resolve("There are no Bookmarks");
+                }
+            });
+        });
+    }
+
     return {
         isShortLifeFolder: privateIsShortLifeFolder,
-        createShortLifeFolder: privateCreateShortLifeFolder
+        createShortLifeFolder: privateCreateShortLifeFolder,
+        getBookmarks: privateGetBookmarks
     };
 
 })();
