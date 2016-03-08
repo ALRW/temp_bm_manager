@@ -1,7 +1,51 @@
+var myBookmarkManager = (function() {
+
+    var shortLifeFolder = {
+        "title": "Short Life Bookmarks"
+    };
+    var shortLifeFolderId; 
+    var weekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
+
+    function privateIsShortLifeFolder() {
+        return new Promise(function(resolve) {
+            chrome.bookmarks.search(shortLifeFolder, function(result) {
+                if (result[0]) {
+                    shortLifeFolderId = result[0].id;
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            });
+        });
+    }
+
+    function privateCreateShortLifeFolder() {
+        return new Promise(function(resolve) {
+            chrome.bookmarks.create(shortLifeFolder, function(response) {
+                shortLifeFolderId = response.id;
+                resolve("Success");
+            });
+        });
+    }
+
+    return {
+        isShortLifeFolder: privateIsShortLifeFolder,
+        createShortLifeFolder: privateCreateShortLifeFolder
+    };
+
+})();
+
+
+
+
+
+
+
 function BookmarkManager() {}
 
+
 var otherBookmarksFolderId = '2';
-var weekInMilliseconds = 6048000000;
+var weekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
 
 BookmarkManager.prototype = {
 
@@ -27,26 +71,26 @@ BookmarkManager.prototype = {
         });
     },
 
-    isShortLifeFolder: function() {
-        return new Promise(function(resolve) {
-            chrome.bookmarks.search(BookmarkManager.prototype.shortLifeFolder, function(result) {
-                if (result[0]) {
-                    resolve(true);
-                } else {
-                    resolve(false);
-                }
-            });
-        });
-    },
+    // isShortLifeFolder: function() {
+    //     return new Promise(function(resolve) {
+    //         chrome.bookmarks.search(BookmarkManager.prototype.shortLifeFolder, function(result) {
+    //             if (result[0]) {
+    //                 resolve(true);
+    //             } else {
+    //                 resolve(false);
+    //             }
+    //         });
+    //     });
+    // },
 
-    createShortLifeFolder: function() {
-        return new Promise(function(resolve) {
-            chrome.bookmarks.create(BookmarkManager.prototype.shortLifeFolder, function(response) {
-                BookmarkManager.prototype.newBookmark.parentId = response.id;
-                resolve("Success");
-            });
-        });
-    },
+    // createShortLifeFolder: function() {
+    //     return new Promise(function(resolve) {
+    //         chrome.bookmarks.create(BookmarkManager.prototype.shortLifeFolder, function(response) {
+    //             BookmarkManager.prototype.newBookmark.parentId = response.id;
+    //             resolve("Success");
+    //         });
+    //     });
+    // },
 
     setParentId: function() {
         return new Promise(function(resolve) {
@@ -72,7 +116,7 @@ BookmarkManager.prototype = {
             });
         });
     },
-    
+
     removeBookmarks: function(bookmarks) {
         return new Promise(function(response) {
             bookmarks.forEach(function(bookmark) {
@@ -86,7 +130,7 @@ BookmarkManager.prototype = {
             });
         });
     },
-    
+
     showBookmarks: function() {
         var list = $('ul.list-group');
         for (var i = 0; i < Manager.bookmarks.length; i++) {
