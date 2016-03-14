@@ -3,28 +3,32 @@ var myBookmarkManager = (function() {
     var shortLifeFolder = {
         "title": "Short Life Bookmarks"
     };
-    var shortLifeFolderId; 
+    var shortLifeFolderId;
     var weekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
     var shortLifeBookmarks = [];
 
-    function privateIsShortLifeFolder() {
+    function publicInitialize() {
+      privateSetFolderId()
+      .then(function(){
+        privateGetBookmarks()
+        .then(function(){
+          console.log(shortLifeBookmarks);
+        });
+      });
+    }
+
+    function privateSetFolderId() {
         return new Promise(function(resolve) {
             chrome.bookmarks.search(shortLifeFolder, function(result) {
                 if (result[0]) {
                     shortLifeFolderId = result[0].id;
-                    resolve(true);
+                    resolve();
                 } else {
-                    resolve(false);
+                    chrome.bookmarks.create(shortLifeFolder, function(response) {
+                        shortLifeFolderId = response.id;
+                        resolve();
+                    });
                 }
-            });
-        });
-    }
-
-    function privateCreateShortLifeFolder() {
-        return new Promise(function(resolve) {
-            chrome.bookmarks.create(shortLifeFolder, function(response) {
-                shortLifeFolderId = response.id;
-                resolve("Success");
             });
         });
     }
@@ -34,18 +38,16 @@ var myBookmarkManager = (function() {
             chrome.bookmarks.getChildren(shortLifeFolderId, function(bookmarks) {
                 if (bookmarks) {
                     shortLifeBookmarks = bookmarks;
-                    resolve(bookmarks);
+                    resolve();
                 } else {
-                  resolve("There are no Bookmarks");
+                    resolve();
                 }
             });
         });
     }
 
     return {
-        isShortLifeFolder: privateIsShortLifeFolder,
-        createShortLifeFolder: privateCreateShortLifeFolder,
-        getBookmarks: privateGetBookmarks
+        initialize: publicInitialize
     };
 
 })();
@@ -107,30 +109,30 @@ BookmarkManager.prototype = {
     //     });
     // },
 
-    setParentId: function() {
-        return new Promise(function(resolve) {
-            chrome.bookmarks.getChildren(otherBookmarksFolderId, function(result) {
-                result.forEach(function(node) {
-                    if (node.title === 'Short Life Bookmarks') {
-                        BookmarkManager.prototype.newBookmark.parentId = node.id;
-                        resolve("Success");
-                    }
-                });
-            });
-        });
-    },
+    // setParentId: function() {
+    //     return new Promise(function(resolve) {
+    //         chrome.bookmarks.getChildren(otherBookmarksFolderId, function(result) {
+    //             result.forEach(function(node) {
+    //                 if (node.title === 'Short Life Bookmarks') {
+    //                     BookmarkManager.prototype.newBookmark.parentId = node.id;
+    //                     resolve("Success");
+    //                 }
+    //             });
+    //         });
+    //     });
+    // },
 
-    getBookmarks: function() {
-        return new Promise(function(resolve) {
-            var parentId = BookmarkManager.prototype.newBookmark.parentId.toString();
-            chrome.bookmarks.getChildren(parentId, function(bookmarks) {
-                if (bookmarks) {
-                    BookmarkManager.prototype.bookmarks = bookmarks;
-                    resolve(bookmarks);
-                }
-            });
-        });
-    },
+    // getBookmarks: function() {
+    //     return new Promise(function(resolve) {
+    //         var parentId = BookmarkManager.prototype.newBookmark.parentId.toString();
+    //         chrome.bookmarks.getChildren(parentId, function(bookmarks) {
+    //             if (bookmarks) {
+    //                 BookmarkManager.prototype.bookmarks = bookmarks;
+    //                 resolve(bookmarks);
+    //             }
+    //         });
+    //     });
+    // },
 
     removeBookmarks: function(bookmarks) {
         return new Promise(function(response) {
