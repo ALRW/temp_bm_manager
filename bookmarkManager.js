@@ -30,22 +30,25 @@ var myBookmarkManager = (function() {
 
   function publicCreateBookmark() {
     privateBuildNewBookmark()
-    .then(function(){
-      shortLifeBookmarks.push(newBookmark);
-      chrome.bookmarks.create(newBookmark);
-    });
+      .then(function() {
+        chrome.bookmarks.create(newBookmark, function(result){
+          shortLifeBookmarks.push(result);
+          $item = $('<a href="' + result.url + '" class="list-group-item">' + result.title + '</a>');
+          $('ul.list-group').append($item);
+        });
+      });
   }
 
-  function privateBuildNewBookmark (){
-    return new Promise(function(resolve){
+  function privateBuildNewBookmark() {
+    return new Promise(function(resolve) {
       chrome.tabs.query({
         currentWindow: true,
         active: true
-      }, function(tabArray){
+      }, function(tabArray) {
         newBookmark = {
-            parentId: shortLifeFolderId,
-            title: tabArray[0].title,
-            url: tabArray[0].url
+          parentId: shortLifeFolderId,
+          title: tabArray[0].title,
+          url: tabArray[0].url
         };
         resolve();
       });
