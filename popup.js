@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
-  Manager = new BookmarkManager();
 
-  Manager.initialise();
+  myBookmarkManager.initialize();
 
   document.getElementById('add').addEventListener('click', function() {
-    Manager.createBookmark();
+    myBookmarkManager.createBookmark();
   });
 
-  if (document.addEventListener)
-    document.addEventListener('click', Manager.openBookmark);
-  else
-    document.attachEvent('onclick', Manager.openBookmark);
+  if (document.addEventListener) {
+    document.addEventListener('click', myBookmarkManager.openBookmark);
+  } else {
+    document.attachEvent('onclick', myBookmarkManager.openBookmark);
+  }
 });
