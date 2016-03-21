@@ -7,16 +7,13 @@ var myBookmarkManager = (function() {
   var weekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
   var shortLifeBookmarks = [];
   var newBookmark;
+  var fnList = [privateSetFolderId, privateGetBookmarks, privateRemoveBookmarks, privateShowBookmarks];
 
-  function publicInitialize() {
-    privateSetFolderId()
-      .then(function() {
-        privateGetBookmarks()
-          .then(function() {
-            privateRemoveBookmarks();
-            privateShowBookmarks();
-          });
-      });
+  function publicInitialise(list){
+    var p = Promise.resolve();
+    return list.reduce(function(pacc, fn){
+      return pacc = pacc.then(fn);
+    }, p);
   }
 
   function publicOpenBookmark(element) {
@@ -116,7 +113,8 @@ var myBookmarkManager = (function() {
   }
 
   return {
-    initialize: publicInitialize,
+    fnList: fnList,
+    initialize: publicInitialise,
     createBookmark: publicCreateBookmark,
     openBookmark: publicOpenBookmark
   };
