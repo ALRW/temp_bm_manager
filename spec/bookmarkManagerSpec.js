@@ -10,7 +10,10 @@ describe('BookmarkManager', function() {
   };
   var element = {
     target: {
-      tagName: "A"
+      tagName: "A",
+      offsetParent: {
+        href: ""
+      }
     }
   };
 
@@ -41,29 +44,40 @@ describe('BookmarkManager', function() {
 
   describe('initialize fn', function() {
     it('runs a list of promises is series', function(done) {
-      function fn1(){return Promise.resolve(1);}
-      function fn2(res){return res + 1;}
+      function fn1() {
+        return Promise.resolve(1);
+      }
+
+      function fn2(res) {
+        return res + 1;
+      }
       var fnlist = [fn1, fn2];
       myBookmarkManager.initialize(fnlist)
-      .then(function(result){
-        expect(result).toEqual(2);
-        done();
-      });
+        .then(function(result) {
+          expect(result).toEqual(2);
+          done();
+        });
     });
   });
 
-  describe('openBookmark fn', function() {
+  describe('interactWithBookmark fn', function() {
     it('opens a bookmark in a new tab when clicked', function() {
       element.target.tagName = "A";
-      myBookmarkManager.openBookmark(element);
+      myBookmarkManager.interactWithBookmark(element);
       expect(chrome.tabs.create).toHaveBeenCalledWith({
         url: undefined
       });
     });
 
+    xit('deletes a bookmark when the delete button is pressed', function(){
+      element.target.tagName = "BUTTON";
+      myBookmarkManager.interactWithBookmark(element);
+      expect(chrome.bookmarks.remove).toHaveBeenCalled();
+    });
+
     it('exits if the item is not a link', function() {
       element.target.tagName = "B";
-      myBookmarkManager.openBookmark(element);
+      myBookmarkManager.interactWithBookmark(element);
       expect(chrome.tabs.create).not.toHaveBeenCalled();
     });
   });

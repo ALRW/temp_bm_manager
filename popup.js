@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   if (document.addEventListener) {
-    document.addEventListener('click', myBookmarkManager.openBookmark);
+    document.addEventListener('click', myBookmarkManager.interactWithBookmark);
   } else {
-    document.attachEvent('onclick', myBookmarkManager.openBookmark);
+    document.attachEvent('onclick', myBookmarkManager.interactWithBookmark);
   }
 });

@@ -9,34 +9,53 @@ var myBookmarkManager = (function() {
   var newBookmark;
   var fnList = [privateSetFolderId, privateGetBookmarks, privateRemoveBookmarks, privateShowBookmarks];
 
-  function publicInitialize(list){
+
+  function publicInitialize(list) {
     var p = Promise.resolve();
-    return list.reduce(function(pacc, fn){
-      return pacc = pacc.then(fn);
-    }, p)
-    .catch(function(error){
-      console.log(error);
-    });
+    return list.reduce(function(pacc, fn) {
+        return pacc = pacc.then(fn);
+      }, p)
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
-  function publicOpenBookmark(element) {
-    if (element.target.tagName !== 'A') {
-      return;
+  function publicInteractWithBookmark(element) {
+    if (element.target.tagName === 'A') {
+      privateOpenLinkInTab(element);
+    } else if (element.target.tagName === 'SPAN' || element.target.tagName === 'BUTTON'){
+      privateRemoveBookmark(element);
+      $('a[href="' + element.target.offsetParent.href +'"]').remove();
     }
-    chrome.tabs.create({
-      url: element.target.href
-    });
   }
 
   function publicCreateBookmark() {
     privateBuildNewBookmark()
-      .then(function() {
-        chrome.bookmarks.create(newBookmark, function(result){
-          shortLifeBookmarks.push(result);
-          $item = $('<a href="' + result.url + '" class="list-group-item">' + result.title + '</a>');
-          $('ul.list-group').append($item);
-        });
+    .then(function() {
+      chrome.bookmarks.create(newBookmark, function(result) {
+        shortLifeBookmarks.push(result);
+        $item = $('<a href="' + result.url + '" class="list-group-item clearfix">' + result.title + '<button class="btn btn-danger btn-del center-block"><span class="glyphicon glyphicon-remove"></span></button></a>');
+        $('ul.list-group').append($item);
       });
+    });
+  }
+
+  function publicGetShortLifeBookmarks (){
+    return shortLifeBookmarks;
+  }
+
+  function privateRemoveBookmark (element){
+    shortLifeBookmarks.filter(function(bookmark){
+      if (bookmark.url === element.target.offsetParent.href){
+        privateDeleteBookmark(bookmark);
+      }
+    });
+  }
+
+  function privateOpenLinkInTab(element){
+    chrome.tabs.create({
+      url: element.target.href
+    });
   }
 
   function privateBuildNewBookmark() {
@@ -76,6 +95,7 @@ var myBookmarkManager = (function() {
       chrome.bookmarks.getChildren(shortLifeFolderId, function(bookmarks) {
         if (bookmarks) {
           shortLifeBookmarks = bookmarks;
+          console.log(shortLifeBookmarks);
           resolve();
         } else {
           resolve();
@@ -90,11 +110,15 @@ var myBookmarkManager = (function() {
     }
     shortLifeBookmarks.forEach(function(bookmark) {
       if (privateIsRemovable(bookmark)) {
-        var index = shortLifeBookmarks.indexOf(bookmark);
-        shortLifeBookmarks.splice(index, 1);
-        chrome.bookmarks.remove(bookmark.id);
+        privateDeleteBookmark(bookmark);
       }
     });
+  }
+
+  function privateDeleteBookmark(bookmark){
+    var index = shortLifeBookmarks.indexOf(bookmark);
+    shortLifeBookmarks.splice(index, 1);
+    chrome.bookmarks.remove(bookmark.id);
   }
 
   function privateIsRemovable(bookmark) {
@@ -110,16 +134,17 @@ var myBookmarkManager = (function() {
     }
     var list = $('ul.list-group');
     for (var i = 0; i < shortLifeBookmarks.length; i++) {
-      $item = $('<a href="' + shortLifeBookmarks[i].url + '" class="list-group-item">' + shortLifeBookmarks[i].title + '</a>');
+      $item = $('<a href="' + shortLifeBookmarks[i].url + '" class="list-group-item">' + shortLifeBookmarks[i].title + '<button class="btn btn-danger btn-del center-block"><span class="glyphicon glyphicon-remove"></span></button></a>');
       list.append($item);
     }
   }
 
   return {
+    getShortLifeBookmarks: publicGetShortLifeBookmarks,
     fnList: fnList,
     initialize: publicInitialize,
     createBookmark: publicCreateBookmark,
-    openBookmark: publicOpenBookmark
+    interactWithBookmark: publicInteractWithBookmark
   };
 
 })();
