@@ -10,11 +10,12 @@ Implemented Features
 - Allow a user to create a new bookmarks and add it to the short-life folder through the extension.
 - Show all bookmarks in the temporary bookmarks folder.
 - Automatically delete a bookmark when it is older than its life-span.
+- Allow a user to delete individual bookmarks.
 
 Features to Implemented
 -----------------------
 
+- Refactor
 - Allow a user to set the length of life of a bookmarks.
-- Allow a user to delete individual bookmarks.
 - Allow a User to setup an alert when a bookmark is about to be automatically deleted.
-- Over-ride Chrome shortcuts and use extension instead.
+- Over-ride Chrome shortcuts to use extension instead.
