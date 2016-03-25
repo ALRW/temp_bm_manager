@@ -9,11 +9,14 @@ var myBookmarkManager = (function() {
   var newBookmark;
   var fnList = [privateSetFolderId, privateGetBookmarks, privateRemoveBookmarks, privateShowBookmarks];
 
-  function publicInitialise(list){
+  function publicInitialize(list){
     var p = Promise.resolve();
     return list.reduce(function(pacc, fn){
       return pacc = pacc.then(fn);
-    }, p);
+    }, p)
+    .catch(function(error){
+      console.log(error);
+    });
   }
 
   function publicOpenBookmark(element) {
@@ -114,7 +117,7 @@ var myBookmarkManager = (function() {
 
   return {
     fnList: fnList,
-    initialize: publicInitialise,
+    initialize: publicInitialize,
     createBookmark: publicCreateBookmark,
     openBookmark: publicOpenBookmark
   };

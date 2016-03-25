@@ -15,5 +15,6 @@ Features to Implemented
 -----------------------
 
 - Allow a user to set the length of life of a bookmarks.
+- Allow a user to delete individual bookmarks.
 - Allow a User to setup an alert when a bookmark is about to be automatically deleted.
 - Over-ride Chrome shortcuts and use extension instead.
