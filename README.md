@@ -9,3 +9,16 @@ In its current version the program creates a separate storage area for short-lif
 Bookmarks can be added (using the blue bookmark button) and deleted (using the individual red delete button) at will through the Application interface in the top right corner of the chrome browser as seen in the image below:
 
 ![New Image](interface.png)
+
+Installation and Usage
+======================
+
+This extension is not currently published on the google extensions store. However, if you would like to use the code clone this git repository
+```
+git clone https://github.com/ALRW/temp_bm_manager.git
+```
+Then open a new google chrome browser window and visit
+```
+chrome://extensions
+```
+Tick the box to enable developer mode and click Load unpacked extension to load the clones repository. Then use as described above.
