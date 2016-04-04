@@ -7,17 +7,19 @@ var myBookmarkManager = (function() {
   var weekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
   var shortLifeBookmarks = [];
   var newBookmark;
-  var fnList = [privateSetFolderId, privateGetBookmarks, privateRemoveBookmarks, privateShowBookmarks];
 
-
-  function publicInitialize(list) {
-    var p = Promise.resolve();
-    return list.reduce(function(pacc, fn) {
-        return pacc = pacc.then(fn);
-      }, p)
-      .catch(function(error) {
-        console.log(error);
+  function publicInitialize() {
+    privateSetFolderId()
+    .then(function(){
+      privateGetBookmarks()
+      .then(function(){
+        privateRemoveBookmarks();
+        privateShowBookmarks();
       });
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
   }
 
   function publicInteractWithBookmark(element) {
@@ -38,10 +40,6 @@ var myBookmarkManager = (function() {
         $('ul.list-group').append($item);
       });
     });
-  }
-
-  function publicGetShortLifeBookmarks (){
-    return shortLifeBookmarks;
   }
 
   function privateRemoveBookmark (element){
@@ -95,7 +93,6 @@ var myBookmarkManager = (function() {
       chrome.bookmarks.getChildren(shortLifeFolderId, function(bookmarks) {
         if (bookmarks) {
           shortLifeBookmarks = bookmarks;
-          console.log(shortLifeBookmarks);
           resolve();
         } else {
           resolve();
@@ -140,8 +137,6 @@ var myBookmarkManager = (function() {
   }
 
   return {
-    getShortLifeBookmarks: publicGetShortLifeBookmarks,
-    fnList: fnList,
     initialize: publicInitialize,
     createBookmark: publicCreateBookmark,
     interactWithBookmark: publicInteractWithBookmark

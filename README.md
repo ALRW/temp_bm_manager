@@ -1,21 +1,11 @@
 Temporary Bookmark Manager
 ==========================
-A Chrome extension to allow short-life bookmarks to be saved.
+A common problem with browser bookmarks is the storage of a large number of items that are rarely if ever used. These bookmarks clog up a users bookmark structure and detract from the usefulness of bookmarks as a feature.
 
-Implemented Features
---------------------
-- Create manifest.json and file structure
-- setup testing environment.
-- Create a short-life bookmarks folder if one does not exist.
-- Allow a user to create a new bookmarks and add it to the short-life folder through the extension.
-- Show all bookmarks in the temporary bookmarks folder.
-- Automatically delete a bookmark when it is older than its life-span.
-- Allow a user to delete individual bookmarks.
+This program acts as a temporary bookmark manager built as an extension for the chrome browser.
 
-Features to Implemented
------------------------
+In its current version the program creates a separate storage area for short-life bookmarks within a separate short-life folder. Any bookmarks saved to this folder are accessible through the normal chrome interface but have a __life-span of seven days__ after which they will are automatically removed. If within this timeframe they are moved to a new folder they will continue to exist as normal bookmarks.
 
-- Refactor
-- Allow a user to set the length of life of a bookmarks.
-- Allow a User to setup an alert when a bookmark is about to be automatically deleted.
-- Over-ride Chrome shortcuts to use extension instead.
+Bookmarks can be added (using the blue bookmark button) and deleted (using the individual red delete button) at will through the Application interface in the top right corner of the chrome browser as seen in the image below:
+
+![New Image](interface.png)

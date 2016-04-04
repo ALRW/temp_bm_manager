@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-  myBookmarkManager.initialize(myBookmarkManager.fnList);
+  myBookmarkManager.initialize();
 
   document.getElementById('add').addEventListener('click', function() {
     myBookmarkManager.createBookmark();
